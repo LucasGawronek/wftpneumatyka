@@ -229,7 +229,7 @@ function ContactInfoCard({
 function PromoHeading({ locale, lines }: { locale: Locale; lines: readonly string[] }) {
   if (locale === "pl") {
     return (
-      <h2 className="max-w-[470px] text-[40px] font-extrabold leading-[48px] tracking-[-0.02em] text-white">
+      <h2 className="max-w-[320px] text-[26px] font-extrabold leading-[1.08] tracking-[-0.02em] text-white sm:max-w-[470px] sm:text-[40px] sm:leading-[48px]">
         <span className="block sm:whitespace-nowrap">
           Zobacz <span className="text-[var(--wft-dark)]">ofertę części</span>
         </span>
@@ -241,7 +241,7 @@ function PromoHeading({ locale, lines }: { locale: Locale; lines: readonly strin
 
   if (locale === "en") {
     return (
-      <h2 className="max-w-[470px] text-[40px] font-extrabold leading-[48px] tracking-[-0.02em] text-white">
+      <h2 className="max-w-[320px] text-[26px] font-extrabold leading-[1.08] tracking-[-0.02em] text-white sm:max-w-[470px] sm:text-[40px] sm:leading-[48px]">
         <span className="block sm:whitespace-nowrap">
           See our <span className="text-[var(--wft-dark)]">parts offer</span>
         </span>
@@ -252,7 +252,7 @@ function PromoHeading({ locale, lines }: { locale: Locale; lines: readonly strin
   }
 
   return (
-    <h2 className="max-w-[470px] text-[40px] font-extrabold leading-[48px] tracking-[-0.02em] text-white">
+    <h2 className="max-w-[320px] text-[26px] font-extrabold leading-[1.08] tracking-[-0.02em] text-white sm:max-w-[470px] sm:text-[40px] sm:leading-[48px]">
       <span className="block text-[var(--wft-dark)] sm:whitespace-nowrap">{lines[0]}</span>
       <span className="block sm:whitespace-nowrap">{lines[1]}</span>
       <span className="block sm:whitespace-nowrap">{lines[2]}</span>
@@ -303,20 +303,20 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
 
   return (
     <div className="pb-0">
-      <section className="relative min-h-[calc(100svh-var(--wft-header-height))] overflow-hidden bg-[#201d1d] text-white">
+      <section className="relative min-h-[calc(100svh-var(--wft-header-height))] overflow-hidden bg-[#201d1d] text-white max-sm:min-h-0">
         <Image
           src="/wft/hero_new.png"
           alt=""
           fill
           priority
-          className="object-cover object-[62%_center] lg:object-center"
+          className="object-cover object-[72%_center] sm:object-[62%_center] lg:object-center"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(21,18,18,0.76)_0%,rgba(21,18,18,0.58)_34%,rgba(21,18,18,0.24)_68%,rgba(21,18,18,0.12)_100%)] sm:bg-black/20" />
 
         <div className="relative z-10 w-full">
           <div className="wft-container hero-shell">
-            <div className="hero-content">
+            <div className="hero-content max-sm:w-full max-sm:py-8">
               <Reveal delay={60}>
                 <h1 className="hero-title">
                   <span className="block">
@@ -334,17 +334,17 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
               </Reveal>
 
               <Reveal delay={220}>
-                <div className="mt-8 flex flex-col gap-4 sm:flex-row lg:mt-10">
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-10">
                   <Link
                     href={catalogPath(locale)}
-                    className="inline-flex h-14 items-center justify-center rounded-[8px] bg-[var(--wft-orange)] px-8 text-[15px] font-semibold !text-white transition hover:bg-[var(--wft-orange-deep)] hover:!text-white"
+                    className="inline-flex h-13 items-center justify-center rounded-[10px] bg-[var(--wft-orange)] px-6 text-[15px] font-semibold !text-white transition hover:bg-[var(--wft-orange-deep)] hover:!text-white sm:h-14 sm:px-8"
                     style={{ color: "#fff" }}
                   >
                     {messages.home.hero.catalogCta}
                   </Link>
                   <Link
                     href={`/${locale}/uslugi`}
-                    className="inline-flex h-14 items-center justify-center rounded-[8px] border border-[var(--wft-orange)] bg-black/25 px-11 text-[15px] font-semibold text-white backdrop-blur-sm transition hover:bg-black/40"
+                    className="inline-flex h-13 items-center justify-center rounded-[10px] border border-[var(--wft-orange)] bg-black/25 px-6 text-[15px] font-semibold text-white backdrop-blur-sm transition hover:bg-black/40 sm:h-14 sm:px-11"
                   >
                     {messages.home.hero.servicesCta}
                   </Link>
@@ -353,7 +353,7 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
 
               <Reveal
                 delay={320}
-                className="mt-8 max-w-[746px] rounded-[22px] bg-[rgba(255,122,26,0.72)] shadow-[0_18px_40px_rgba(0,0,0,0.18)] lg:mt-10"
+                className="mt-6 max-w-[746px] rounded-[22px] bg-[rgba(255,122,26,0.72)] shadow-[0_18px_40px_rgba(0,0,0,0.18)] lg:mt-10"
               >
                 <HeroStats stats={messages.home.stats} />
               </Reveal>
@@ -362,12 +362,12 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
         </div>
       </section>
 
-      <section className="bg-[var(--wft-body)] py-16 sm:py-20">
+      <section className="bg-[var(--wft-body)] py-14 sm:py-20">
         <div className="wft-container">
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start lg:gap-16">
+          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start lg:gap-16">
             <Reveal>
               <div>
-                <h2 className="max-w-[690px] text-[49px] font-extrabold leading-[48px] tracking-[-0.02em]">
+                <h2 className="max-w-[690px] text-[28px] font-extrabold leading-[0.98] tracking-[-0.02em] sm:text-[40px] sm:leading-[0.96] lg:text-[49px] lg:leading-[48px]">
                   <span className="block">{messages.home.intro.titleLines[0]}</span>
                   <span className="block">
                     <span className="text-[var(--wft-orange)]">{messages.home.intro.titleLines[1]}</span>
@@ -377,7 +377,7 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
               </div>
             </Reveal>
             <Reveal delay={110}>
-              <p className="max-w-[560px] pt-3 text-[#363636] lg:pt-4">
+              <p className="max-w-[560px] pt-1 text-[16px] leading-7 text-[#363636] sm:pt-3 sm:text-[18px] sm:leading-8 lg:pt-4">
                 {messages.home.intro.description}
               </p>
             </Reveal>
@@ -392,8 +392,8 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
           <Reveal className="h-full">
             <div className="relative h-full overflow-hidden rounded-[24px] bg-white shadow-[0_18px_34px_rgba(0,0,0,0.08)]">
               <div className="grid h-full lg:grid-cols-[0.72fr_1.28fr]">
-                <div className="relative z-10 flex flex-col justify-center px-7 py-12 sm:px-8 lg:px-7">
-                  <h3 className="whitespace-pre-line text-[34px] font-extrabold uppercase leading-[1.08] tracking-[-0.02em] sm:text-[38px]">
+                <div className="relative z-10 flex flex-col items-center justify-center px-7 pb-6 pt-10 text-center sm:px-8 lg:items-start lg:px-7 lg:py-12 lg:text-left">
+                  <h3 className="whitespace-pre-line text-center text-[26px] font-extrabold uppercase leading-[0.98] tracking-[-0.02em] sm:text-[32px] lg:text-left lg:text-[38px] lg:leading-[1.08]">
                     <span className="text-[var(--wft-orange)]">
                       {messages.home.categoryShowcase.brakeCalipers.split("\n")[0]}
                     </span>
@@ -402,18 +402,18 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
                   </h3>
                   <Link
                     href={categoryPath(locale, "zaciski-hamulcowe")}
-                    className="mt-8 inline-flex h-12 w-[98px] items-center justify-center rounded-[8px] bg-[var(--wft-orange)] text-[15px] font-semibold !text-white"
+                    className="mt-6 inline-flex h-11 w-[98px] items-center justify-center rounded-[10px] bg-[var(--wft-orange)] text-[15px] font-semibold !text-white lg:mt-8 lg:h-12"
                     style={{ color: "#fff" }}
                   >
                     {messages.home.categoryShowcase.shopCta}
                   </Link>
                 </div>
-                <div className="relative min-h-[400px] sm:min-h-[470px] lg:min-h-[420px]">
+                <div className="relative min-h-[250px] sm:min-h-[360px] lg:min-h-[420px]">
                   <Image
                     src="/wft/zaciski_hamulcowe.png"
                     alt="Zaciski hamulcowe"
                     fill
-                    className="object-cover object-[78%_58%]"
+                    className="object-contain object-center px-6 pb-2 pt-2 sm:px-8 lg:object-cover lg:px-0 lg:pb-0 lg:pt-0 lg:object-[78%_58%]"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 76vw, 720px"
                   />
                 </div>
@@ -429,14 +429,14 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
                     src="/wft/zestaw_naprawczy.png"
                     alt=""
                     fill
-                    className="object-cover object-right"
+                    className="object-cover object-[72%_center] sm:object-right"
                     sizes="(max-width: 1024px) 100vw, 420px"
                   />
                 </div>
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(34,32,32,0.88)_0%,rgba(34,32,32,0.72)_34%,rgba(34,32,32,0.28)_62%,rgba(34,32,32,0.02)_100%)]" />
-                <div className="relative grid min-h-[268px] grid-cols-[0.95fr_1.05fr]">
-                  <div className="flex flex-col justify-center px-8 py-8">
-                    <h3 className="whitespace-pre-line text-[28px] font-extrabold uppercase leading-[1.02] tracking-[-0.02em]">
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(34,32,32,0.92)_0%,rgba(34,32,32,0.82)_44%,rgba(34,32,32,0.36)_78%,rgba(34,32,32,0.08)_100%)]" />
+                <div className="relative grid min-h-[220px] grid-cols-[1.18fr_0.82fr] sm:min-h-[268px] sm:grid-cols-[0.95fr_1.05fr]">
+                  <div className="flex flex-col justify-center px-6 py-6 sm:px-8 sm:py-8">
+                    <h3 className="whitespace-pre-line text-[24px] font-extrabold uppercase leading-[1.02] tracking-[-0.02em] sm:text-[28px]">
                       <span className="text-[var(--wft-orange)]">
                         {messages.home.categoryShowcase.repairSets.split("\n")[0]}
                       </span>
@@ -445,7 +445,7 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
                     </h3>
                     <Link
                       href={categoryPath(locale, repairSetsCategory?.slug ?? "zestawy-naprawcze")}
-                      className="mt-8 inline-flex h-12 w-[126px] items-center justify-center rounded-[8px] bg-[var(--wft-orange)] text-[15px] font-semibold !text-white"
+                      className="mt-6 inline-flex h-11 w-[112px] items-center justify-center rounded-[10px] bg-[var(--wft-orange)] text-[15px] font-semibold !text-white sm:mt-8 sm:h-12 sm:w-[126px]"
                       style={{ color: "#fff" }}
                     >
                       {messages.home.categoryShowcase.shopCta}
@@ -463,14 +463,14 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
                     src="/wft/zawory_pneumatyczne.png"
                     alt=""
                     fill
-                    className="object-cover object-right"
+                    className="object-cover object-[72%_center] sm:object-right"
                     sizes="(max-width: 1024px) 100vw, 420px"
                   />
                 </div>
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(34,32,32,0.9)_0%,rgba(34,32,32,0.74)_34%,rgba(34,32,32,0.32)_62%,rgba(34,32,32,0.03)_100%)]" />
-                <div className="relative grid min-h-[268px] grid-cols-[0.95fr_1.05fr]">
-                  <div className="flex flex-col justify-center px-8 py-8">
-                    <h3 className="whitespace-pre-line text-[25px] font-extrabold uppercase leading-[1.02] tracking-[-0.02em]">
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(34,32,32,0.92)_0%,rgba(34,32,32,0.82)_44%,rgba(34,32,32,0.36)_78%,rgba(34,32,32,0.08)_100%)]" />
+                <div className="relative grid min-h-[220px] grid-cols-[1.18fr_0.82fr] sm:min-h-[268px] sm:grid-cols-[0.95fr_1.05fr]">
+                  <div className="flex flex-col justify-center px-6 py-6 sm:px-8 sm:py-8">
+                    <h3 className="whitespace-pre-line text-[22px] font-extrabold uppercase leading-[1.02] tracking-[-0.02em] sm:text-[25px]">
                       <span className="text-[var(--wft-orange)]">
                         {messages.home.categoryShowcase.pneumaticValves.split("\n")[0]}
                       </span>
@@ -479,7 +479,7 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
                     </h3>
                     <Link
                       href={categoryPath(locale, "zawory-pneumatyczne")}
-                      className="mt-8 inline-flex h-12 w-[126px] items-center justify-center rounded-[8px] bg-[var(--wft-orange)] text-[15px] font-semibold !text-white"
+                      className="mt-6 inline-flex h-11 w-[112px] items-center justify-center rounded-[10px] bg-[var(--wft-orange)] text-[15px] font-semibold !text-white sm:mt-8 sm:h-12 sm:w-[126px]"
                       style={{ color: "#fff" }}
                     >
                       {messages.home.categoryShowcase.shopCta}
@@ -558,25 +558,26 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
           <Reveal delay={110}>
             <div className="relative overflow-hidden rounded-[24px] bg-[var(--wft-orange)] shadow-[0_18px_34px_rgba(0,0,0,0.08)]">
               <div
-                className="absolute inset-y-0 right-0 w-[58%] bg-[#262121]"
+                className="absolute inset-y-0 right-[-12%] hidden w-[58%] bg-[#262121] sm:block"
                 style={{ clipPath: "polygon(28% 0, 100% 0, 100% 100%, 72% 100%)" }}
               />
-              <div className="relative min-h-[320px] px-6 py-8 sm:min-h-[360px] sm:px-8 sm:py-10 lg:min-h-[382px] lg:px-12 lg:py-12">
+              <div className="absolute inset-x-0 bottom-0 h-[42%] bg-[#262121] sm:hidden" />
+              <div className="relative min-h-[420px] px-6 py-8 sm:min-h-[360px] sm:px-8 sm:py-10 lg:min-h-[382px] lg:px-12 lg:py-12">
                 <div className="relative z-10 flex max-w-[470px] flex-col justify-center text-white lg:min-h-[286px]">
                   <PromoHeading locale={locale} lines={messages.home.promo.lines} />
                   <Link
                     href={catalogPath(locale)}
-                    className="mt-7 inline-flex h-11 w-fit items-center rounded-[8px] bg-[var(--wft-dark)] px-7 text-[14px] font-semibold text-white transition hover:bg-black"
+                    className="mt-6 inline-flex h-11 w-fit items-center rounded-[10px] bg-[var(--wft-dark)] px-6 text-[14px] font-semibold text-white transition hover:bg-black sm:mt-7 sm:px-7"
                   >
                     {messages.home.promo.cta}
                   </Link>
                 </div>
-                <div className="pointer-events-none absolute bottom-[-2%] right-[-6%] top-[-2%] z-10 w-[64%] sm:right-[-2%] sm:w-[58%] lg:right-[1%] lg:top-[-6%] lg:w-[54%]">
+                <div className="pointer-events-none absolute bottom-[-1%] right-[-12%] z-10 h-[55%] w-[78%] sm:bottom-[-2%] sm:right-[-2%] sm:top-[-2%] sm:h-auto sm:w-[58%] lg:right-[1%] lg:top-[-6%] lg:w-[54%]">
                   <Image
                     src="/wft/zawor.png"
                     alt=""
                     fill
-                    className="object-contain object-center drop-shadow-[0_22px_34px_rgba(0,0,0,0.3)] lg:scale-[1.18]"
+                    className="object-contain object-center drop-shadow-[0_22px_34px_rgba(0,0,0,0.3)] max-sm:scale-[0.88] lg:scale-[1.18]"
                     sizes="(max-width: 640px) 58vw, (max-width: 1024px) 42vw, 520px"
                   />
                 </div>

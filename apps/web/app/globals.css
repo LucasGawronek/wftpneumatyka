@@ -171,18 +171,25 @@ textarea {
 }
 
 @media (max-width: 639px) {
+  :root {
+    --wft-header-height: 182px;
+  }
+
   .hero-title {
-    font-size: 38px;
-    line-height: 42px;
+    font-size: 28px;
+    line-height: 32px;
+    max-width: 270px;
   }
 
   .hero-copy {
-    font-size: 16px;
-    line-height: 30px;
+    font-size: 15px;
+    line-height: 24px;
+    max-width: 270px;
   }
 
   .hero-content {
-    transform: translateY(16px);
+    max-width: 100%;
+    transform: translateY(0);
   }
 }
 

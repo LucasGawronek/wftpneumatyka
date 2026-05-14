@@ -147,14 +147,16 @@ export function HeroStats({ stats }: HeroStatsProps) {
   return (
     <div
       ref={ref}
-      className="grid overflow-hidden rounded-[22px] sm:grid-cols-3"
+      className="grid grid-cols-3 overflow-hidden rounded-[22px]"
     >
       {parsedStats.map((stat) => (
-        <div key={stat.label} className="px-6 py-5 text-white sm:px-8 sm:py-6">
-          <div className="text-[34px] font-extrabold leading-none sm:text-[42px]">
+        <div key={stat.label} className="px-4 py-4 text-white sm:px-8 sm:py-6">
+          <div className="text-[24px] font-extrabold leading-none sm:text-[42px]">
             {formatAnimatedValue(stat, progress)}
           </div>
-          <div className="mt-3 text-[14px] font-semibold">{stat.label}</div>
+          <div className="mt-2 text-[11px] font-semibold leading-4 sm:mt-3 sm:text-[14px] sm:leading-5">
+            {stat.label}
+          </div>
         </div>
       ))}
     </div>
