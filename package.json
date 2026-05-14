@@ -1,0 +1,17 @@
+{
+  "name": "wftwebsite",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/cms"
+  ],
+  "scripts": {
+    "dev": "npm run dev:all",
+    "dev:all": "node apps/cms/node_modules/concurrently/dist/bin/concurrently.js --raw --names cms,web --prefix-colors blue,green \"npm --prefix apps/cms run develop\" \"npm --prefix apps/web run dev\"",
+    "dev:web": "npm --prefix apps/web run dev",
+    "dev:cms": "npm --prefix apps/cms run develop",
+    "build:web": "npm --prefix apps/web run build",
+    "build:cms": "npm --prefix apps/cms run build",
+    "lint:web": "npm --prefix apps/web run lint"
+  }
+}
