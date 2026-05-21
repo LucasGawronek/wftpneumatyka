@@ -655,8 +655,16 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
           <div className="mt-14 grid gap-10 lg:grid-cols-[0.52fr_0.48fr] lg:items-start">
             <Reveal>
               <div className="space-y-7">
-                <div className="flex min-h-[175px] items-center justify-center rounded-[22px] bg-white text-center text-[28px] font-extrabold shadow-[0_12px_26px_rgba(0,0,0,0.07)]">
-                  {messages.home.contact.buildingPhoto}
+                <div className="overflow-hidden rounded-[22px] shadow-[0_12px_26px_rgba(0,0,0,0.07)]">
+                  <div className="relative aspect-[16/10] bg-white">
+                    <Image
+                      src="/building.webp"
+                      alt={messages.home.contact.buildingPhoto}
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 38vw, 100vw"
+                    />
+                  </div>
                 </div>
                 <div className="overflow-hidden rounded-[22px] shadow-[0_12px_26px_rgba(0,0,0,0.07)]">
                   <div className="relative aspect-[805/611] bg-white">

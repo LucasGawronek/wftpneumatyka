@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { ProductSearch } from "@/components/product-search";
 import {
   catalogPath,
@@ -53,6 +53,11 @@ type SiteHeaderProps = {
   };
 };
 
+const SOCIAL_LINKS = {
+  facebook: "https://www.facebook.com/wft.pneumatyka",
+  instagram: "https://www.instagram.com/truck_pneumatic_system?igsh=a2E4Zzhoa2JsbHph",
+} as const;
+
 function PhoneIcon() {
   return (
     <Image
@@ -63,6 +68,54 @@ function PhoneIcon() {
       className="h-[18px] w-[18px]"
       aria-hidden="true"
     />
+  );
+}
+
+function FacebookIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-[18px] w-[18px] fill-current" aria-hidden="true">
+      <path d="M24 12.1C24 5.4 18.6 0 12 0S0 5.4 0 12.1c0 6 4.4 11 10.1 11.9v-8.4H7.1v-3.5h3V9.4c0-3 1.8-4.7 4.6-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9v2.3h3.4l-.5 3.5h-2.9V24C19.6 23.1 24 18.1 24 12.1Z" />
+    </svg>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" aria-hidden="true">
+      <rect
+        x="3.25"
+        y="3.25"
+        width="17.5"
+        height="17.5"
+        rx="5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
+      <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="17.4" cy="6.8" r="1.2" fill="currentColor" />
+    </svg>
+  );
+}
+
+function SocialIconLink({
+  href,
+  label,
+  icon,
+}: {
+  href: string;
+  label: string;
+  icon: ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={label}
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:bg-white/12 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-[var(--wft-orange)]"
+    >
+      {icon}
+    </a>
   );
 }
 
@@ -295,8 +348,22 @@ export function SiteHeader({ locale, messages }: SiteHeaderProps) {
               +48 663 226 683
             </a>
           </div>
-          <div className="hidden sm:block">
-            <LanguageSwitcher locale={locale} messages={messages} />
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <SocialIconLink
+                href={SOCIAL_LINKS.facebook}
+                label="Facebook"
+                icon={<FacebookIcon />}
+              />
+              <SocialIconLink
+                href={SOCIAL_LINKS.instagram}
+                label="Instagram"
+                icon={<InstagramIcon />}
+              />
+            </div>
+            <div className="hidden sm:block">
+              <LanguageSwitcher locale={locale} messages={messages} />
+            </div>
           </div>
         </div>
       </div>
