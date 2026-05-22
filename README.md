@@ -36,6 +36,13 @@ Najwazniejsze zmienne:
 - `STRAPI_URL=http://127.0.0.1:1337`
 - `STRAPI_API_TOKEN=` token API wygenerowany w panelu Strapi
 - `NEXT_PUBLIC_SITE_URL=http://localhost:3000`
+- `SMTP_HOST=` host SMTP dla powiadomien z formularzy
+- `SMTP_PORT=465`
+- `SMTP_SECURE=true`
+- `SMTP_USER=` login skrzynki wysylajacej
+- `SMTP_PASS=` haslo skrzynki wysylajacej
+- `SMTP_FROM=biuro@wft-pneumatyka.pl`
+- `FORM_NOTIFICATIONS_TO=biuro@wft-pneumatyka.pl`
 
 ## Jak podlaczyc formularz do Strapi
 
@@ -46,3 +53,4 @@ W panelu Strapi:
 3. Wklej token do `apps/web/.env.local` jako `STRAPI_API_TOKEN`.
 
 Frontend pobiera dane z CMS po stronie serwera i wysyla formularz przez `app/api/quote/route.ts`.
+Po poprawnym zapisie do Strapi ten sam endpoint wysyla tez powiadomienie e-mail przez SMTP.

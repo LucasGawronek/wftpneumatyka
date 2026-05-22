@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createQuoteRequest } from "@/lib/catalog";
 import { defaultLocale, getMessages, isLocale } from "@/lib/i18n";
+import { sendNotificationEmail } from "@/lib/notification-email";
 
 type QuoteRequestBody = {
   locale?: string;
@@ -22,15 +23,28 @@ export async function POST(request: Request) {
     const localeParam = body.locale ?? defaultLocale;
     const locale = isLocale(localeParam) ? localeParam : defaultLocale;
     const messages = getMessages(locale);
+    const payload = {
+      locale,
+      name: body.name?.trim() || "",
+      email: body.email?.trim() || "",
+      phone: body.phone?.trim() || "",
+      company: body.company?.trim() || "",
+      message: body.message?.trim() || "",
+      consent: body.consent === true,
+      productDocumentId: body.productDocumentId?.trim() || "",
+      productName: body.productName?.trim() || "",
+      productSlug: body.productSlug?.trim() || "",
+      productPartNumber: body.productPartNumber?.trim() || "",
+    };
 
-    if (!body.name || !body.email || !body.message) {
+    if (!payload.name || !payload.email || !payload.message) {
       return NextResponse.json(
         { error: messages.api.quote.missingFields },
         { status: 400 },
       );
     }
 
-    if (!body.consent) {
+    if (!payload.consent) {
       return NextResponse.json(
         { error: messages.api.quote.missingConsent },
         { status: 400 },
@@ -39,16 +53,28 @@ export async function POST(request: Request) {
 
     await createQuoteRequest({
       locale,
-      customerName: body.name,
-      email: body.email,
-      phone: body.phone,
-      company: body.company,
-      message: body.message,
-      consent: body.consent,
-      productDocumentId: body.productDocumentId,
-      productName: body.productName,
-      productSlug: body.productSlug,
-      productPartNumber: body.productPartNumber,
+      customerName: payload.name,
+      email: payload.email,
+      phone: payload.phone,
+      company: payload.company,
+      message: payload.message,
+      consent: payload.consent,
+      productDocumentId: payload.productDocumentId || undefined,
+      productName: payload.productName || undefined,
+      productSlug: payload.productSlug || undefined,
+      productPartNumber: payload.productPartNumber || undefined,
+    });
+
+    await sendNotificationEmail({
+      locale,
+      name: payload.name,
+      email: payload.email,
+      phone: payload.phone || undefined,
+      company: payload.company || undefined,
+      message: payload.message,
+      productName: payload.productName || undefined,
+      productSlug: payload.productSlug || undefined,
+      productPartNumber: payload.productPartNumber || undefined,
     });
 
     return NextResponse.json({ ok: true });
