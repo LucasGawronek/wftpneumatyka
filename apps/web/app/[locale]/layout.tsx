@@ -23,10 +23,34 @@ export async function generateMetadata({
   const { locale } = await params;
   const activeLocale = isLocale(locale) ? locale : defaultLocale;
   const messages = getMessages(activeLocale);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wft-pneumatyka.pl";
 
   return {
+    metadataBase: new URL(siteUrl),
     title: messages.site.title,
     description: messages.site.description,
+    openGraph: {
+      title: messages.site.title,
+      description: messages.site.description,
+      url: `/${activeLocale}`,
+      siteName: messages.site.title,
+      locale: activeLocale,
+      type: "website",
+      images: [
+        {
+          url: "/wft/hero_new.png",
+          width: 1200,
+          height: 630,
+          alt: messages.site.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: messages.site.title,
+      description: messages.site.description,
+      images: ["/wft/hero_new.png"],
+    },
   };
 }
 
