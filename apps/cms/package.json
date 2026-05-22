@@ -15,6 +15,7 @@
     "upgrade:dry": "npx @strapi/upgrade latest --dry"
   },
   "dependencies": {
+    "@strapi/provider-email-nodemailer": "5.45.0",
     "@strapi/plugin-cloud": "5.45.0",
     "@strapi/plugin-users-permissions": "5.45.0",
     "@strapi/strapi": "5.45.0",
