@@ -1,12 +1,49 @@
+import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
 import { Reveal } from "@/components/reveal";
-import { getMessages, type Locale } from "@/lib/i18n";
+import { defaultLocale, getMessages, isLocale, type Locale } from "@/lib/i18n";
+import {
+  buildBreadcrumbJsonLd,
+  buildLocaleAlternates,
+  buildPageTitle,
+  getOpenGraphLocale,
+  localizedAbsoluteUrl,
+  trimDescription,
+} from "@/lib/seo";
 
 type ContactPageProps = {
   params: Promise<{
     locale: Locale;
   }>;
 };
+
+export async function generateMetadata({
+  params,
+}: ContactPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const activeLocale = isLocale(locale) ? locale : defaultLocale;
+  const content = contactContent[activeLocale];
+  const title = buildPageTitle(content.title);
+  const description = trimDescription(content.lead);
+
+  return {
+    title,
+    description,
+    alternates: buildLocaleAlternates(activeLocale, "/kontakt"),
+    openGraph: {
+      title,
+      description,
+      url: localizedAbsoluteUrl(activeLocale, "/kontakt"),
+      locale: getOpenGraphLocale(activeLocale),
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
 
 type ContactPageContent = {
   eyebrow: string;
@@ -166,9 +203,17 @@ export default async function ContactPage({ params }: ContactPageProps) {
     "WFT.Pneumatyka Waldemar Balak Regeneracja zacisków, zaworów, Długa 23, 64-000 Sierakowo",
   );
   const googleMapEmbedUrl = `https://www.google.com/maps?q=${googleMapBusinessQuery}&z=19&output=embed`;
+  const contactJsonLd = buildBreadcrumbJsonLd([
+    { name: messages.header.nav.home, url: localizedAbsoluteUrl(locale) },
+    { name: messages.header.nav.contact, url: localizedAbsoluteUrl(locale, "/kontakt") },
+  ]);
 
   return (
     <div className="bg-[#f6f6f6] py-8 md:py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactJsonLd) }}
+      />
       <div className="wft-container space-y-8">
         <Reveal>
           <section className="overflow-hidden rounded-[24px] border border-[#e5ddd3] bg-white">

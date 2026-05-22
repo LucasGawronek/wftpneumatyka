@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
 import { InquiryForm } from "@/components/inquiry-form";
 import { getProductBySlug } from "@/lib/catalog";
-import { getMessages, type Locale } from "@/lib/i18n";
+import { defaultLocale, getMessages, isLocale, type Locale } from "@/lib/i18n";
+import {
+  buildBreadcrumbJsonLd,
+  buildLocaleAlternates,
+  buildPageTitle,
+  getOpenGraphLocale,
+  localizedAbsoluteUrl,
+  trimDescription,
+} from "@/lib/seo";
 
 type QuotePageProps = {
   params: Promise<{
@@ -11,10 +20,49 @@ type QuotePageProps = {
   }>;
 };
 
+export async function generateMetadata({
+  params,
+  searchParams,
+}: QuotePageProps): Promise<Metadata> {
+  const [{ locale }, { product }] = await Promise.all([params, searchParams]);
+  const activeLocale = isLocale(locale) ? locale : defaultLocale;
+  const messages = getMessages(activeLocale);
+  const selectedProduct = product ? await getProductBySlug(product, activeLocale) : null;
+  const title = buildPageTitle(messages.quotePage.label);
+  const description = trimDescription(
+    selectedProduct
+      ? `${messages.quotePage.description} ${selectedProduct.name} ${selectedProduct.partNumber}`
+      : messages.quotePage.description,
+  );
+  const suffix = product ? `?product=${encodeURIComponent(product)}` : "";
+
+  return {
+    title,
+    description,
+    alternates: buildLocaleAlternates(activeLocale, `/wycena${suffix}`),
+    openGraph: {
+      title,
+      description,
+      url: localizedAbsoluteUrl(activeLocale, `/wycena${suffix}`),
+      locale: getOpenGraphLocale(activeLocale),
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
+
 export default async function LocalizedQuotePage({ params, searchParams }: QuotePageProps) {
   const [{ locale }, { product }] = await Promise.all([params, searchParams]);
   const messages = getMessages(locale);
   const selectedProduct = product ? await getProductBySlug(product, locale) : null;
+  const quoteJsonLd = buildBreadcrumbJsonLd([
+    { name: messages.header.nav.home, url: localizedAbsoluteUrl(locale) },
+    { name: messages.common.quoteRequest, url: localizedAbsoluteUrl(locale, "/wycena") },
+  ]);
   const inquiryFormMessages = {
     name: messages.inquiryForm.name,
     email: messages.inquiryForm.email,
@@ -47,6 +95,10 @@ export default async function LocalizedQuotePage({ params, searchParams }: Quote
 
   return (
     <div className="bg-[#f6f6f6] py-8 md:py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(quoteJsonLd) }}
+      />
       <div className="wft-container grid gap-8 xl:grid-cols-[0.88fr_1.12fr]">
         <section className="overflow-hidden rounded-[24px] bg-white">
           <div className="px-6 py-8 sm:px-8 lg:px-10 lg:py-10">

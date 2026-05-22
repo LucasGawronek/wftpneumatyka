@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import { getMessages, type Locale } from "@/lib/i18n";
+import { defaultLocale, isLocale } from "@/lib/i18n";
+import {
+  buildBreadcrumbJsonLd,
+  buildLocaleAlternates,
+  buildPageTitle,
+  getOpenGraphLocale,
+  localizedAbsoluteUrl,
+  trimDescription,
+} from "@/lib/seo";
 
 type PrivacyPageProps = {
   params: Promise<{
@@ -6,13 +16,53 @@ type PrivacyPageProps = {
   }>;
 };
 
+export async function generateMetadata({
+  params,
+}: PrivacyPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const activeLocale = isLocale(locale) ? locale : defaultLocale;
+  const messages = getMessages(activeLocale);
+  const content = messages.pages.privacy;
+  const title = buildPageTitle(content.title);
+  const description = trimDescription(content.intro);
+
+  return {
+    title,
+    description,
+    alternates: buildLocaleAlternates(activeLocale, "/polityka-prywatnosci"),
+    openGraph: {
+      title,
+      description,
+      url: localizedAbsoluteUrl(activeLocale, "/polityka-prywatnosci"),
+      locale: getOpenGraphLocale(activeLocale),
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
+
 export default async function PrivacyPage({ params }: PrivacyPageProps) {
   const { locale } = await params;
   const messages = getMessages(locale);
   const content = messages.pages.privacy;
+  const privacyJsonLd = buildBreadcrumbJsonLd([
+    { name: messages.header.nav.home, url: localizedAbsoluteUrl(locale) },
+    {
+      name: messages.footer.privacy,
+      url: localizedAbsoluteUrl(locale, "/polityka-prywatnosci"),
+    },
+  ]);
 
   return (
     <div className="bg-[#f8f8f8] py-10 md:py-14">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(privacyJsonLd) }}
+      />
       <div className="wft-container space-y-8">
         <section className="rounded-[24px] bg-white px-6 py-8 shadow-[0_12px_28px_rgba(0,0,0,0.06)] sm:px-8 md:px-10">
           <p className="label text-[var(--wft-orange)]">{content.eyebrow}</p>

@@ -14,12 +14,45 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wft-pneumatyka.pl";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  applicationName: "WFT Pneumatyka",
+  title: "WFT Pneumatyka",
+  description:
+    "Regeneracja i czesci ukladow pneumatycznych oraz hamulcowych do samochodow ciezarowych, naczep i autobusow.",
+  keywords: [
+    "WFT Pneumatyka",
+    "pneumatyka ciezarowa",
+    "regeneracja zaciskow hamulcowych",
+    "regeneracja zaworow pneumatycznych",
+    "czesci do naczep",
+    "uklady hamulcowe ciezarowe",
+  ],
+  referrer: "origin-when-cross-origin",
+  creator: "WFT Pneumatyka",
+  publisher: "WFT Pneumatyka",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
     icon: "/favicon.jpg",
     shortcut: "/favicon.jpg",
     apple: "/favicon.jpg",
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
+    type: "website",
+    siteName: "WFT Pneumatyka",
     images: [
       {
         url: "/wft/hero_new.png",
@@ -31,6 +64,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    title: "WFT Pneumatyka",
+    description:
+      "Regeneracja i czesci ukladow pneumatycznych oraz hamulcowych do transportu ciezarowego.",
     images: ["/wft/hero_new.png"],
   },
 };

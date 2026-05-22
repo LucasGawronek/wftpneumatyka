@@ -1,13 +1,57 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Reveal } from "@/components/reveal";
 import { ServicesTabs } from "@/components/services-tabs";
-import { catalogPath, contactPath, getMessages, type Locale } from "@/lib/i18n";
+import {
+  catalogPath,
+  contactPath,
+  defaultLocale,
+  getMessages,
+  isLocale,
+  type Locale,
+} from "@/lib/i18n";
+import {
+  buildBreadcrumbJsonLd,
+  buildLocaleAlternates,
+  buildPageTitle,
+  getOpenGraphLocale,
+  localizedAbsoluteUrl,
+  trimDescription,
+} from "@/lib/seo";
 
 type ServicesPageProps = {
   params: Promise<{
     locale: Locale;
   }>;
 };
+
+export async function generateMetadata({
+  params,
+}: ServicesPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const activeLocale = isLocale(locale) ? locale : defaultLocale;
+  const content = servicesContent[activeLocale];
+  const title = buildPageTitle(content.title);
+  const description = trimDescription(content.lead);
+
+  return {
+    title,
+    description,
+    alternates: buildLocaleAlternates(activeLocale, "/uslugi"),
+    openGraph: {
+      title,
+      description,
+      url: localizedAbsoluteUrl(activeLocale, "/uslugi"),
+      locale: getOpenGraphLocale(activeLocale),
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
 
 type ServicesContent = {
   eyebrow: string;
@@ -235,9 +279,17 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
   const { locale } = await params;
   const messages = getMessages(locale);
   const content = servicesContent[locale];
+  const servicesJsonLd = buildBreadcrumbJsonLd([
+    { name: messages.header.nav.home, url: localizedAbsoluteUrl(locale) },
+    { name: messages.header.nav.services, url: localizedAbsoluteUrl(locale, "/uslugi") },
+  ]);
 
   return (
     <div className="bg-[#f6f6f6] py-8 md:py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
+      />
       <div className="wft-container space-y-8">
         <Reveal delay={90}>
           <ServicesTabs

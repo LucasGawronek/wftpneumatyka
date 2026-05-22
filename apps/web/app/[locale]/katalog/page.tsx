@@ -1,9 +1,12 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { EmptyState } from "@/components/empty-state";
 import { ProductCard } from "@/components/product-card";
 import {
   catalogPath,
+  defaultLocale,
   getMessages,
+  isLocale,
   type Locale,
 } from "@/lib/i18n";
 import {
@@ -13,6 +16,14 @@ import {
   getProducts,
   getTopLevelCategories,
 } from "@/lib/catalog";
+import {
+  buildBreadcrumbJsonLd,
+  buildLocaleAlternates,
+  buildPageTitle,
+  getOpenGraphLocale,
+  localizedAbsoluteUrl,
+  trimDescription,
+} from "@/lib/seo";
 
 function getFilteringMessage(locale: Locale, category?: string | null, brand?: string | null) {
   if (locale === "pl") {
@@ -94,6 +105,55 @@ type CatalogPageProps = {
   }>;
 };
 
+export async function generateMetadata({
+  params,
+  searchParams,
+}: CatalogPageProps): Promise<Metadata> {
+  const [{ locale }, { category, brand }] = await Promise.all([params, searchParams]);
+  const activeLocale = isLocale(locale) ? locale : defaultLocale;
+  const messages = getMessages(activeLocale);
+  const categories = await getCategories(activeLocale);
+  const activeCategory = category ? categories.find((item) => item.slug === category) : null;
+  const activeLabel =
+    [activeCategory?.name, brand].filter((value): value is string => Boolean(value)).join(" / ") ||
+    messages.header.nav.shop;
+  const description = trimDescription(
+    activeCategory?.description ||
+      getFilteringMessage(activeLocale, activeCategory?.name, brand) ||
+      messages.catalog.fullList,
+  );
+  const query = new URLSearchParams();
+
+  if (category) {
+    query.set("category", category);
+  }
+
+  if (brand) {
+    query.set("brand", brand);
+  }
+
+  const suffix = query.size > 0 ? `?${query.toString()}` : "";
+  const path = `/katalog${suffix}`;
+
+  return {
+    title: buildPageTitle(activeLabel),
+    description,
+    alternates: buildLocaleAlternates(activeLocale, path),
+    openGraph: {
+      title: buildPageTitle(activeLabel),
+      description,
+      url: localizedAbsoluteUrl(activeLocale, path),
+      locale: getOpenGraphLocale(activeLocale),
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: buildPageTitle(activeLabel),
+      description,
+    },
+  };
+}
+
 export default async function LocalizedCatalogPage({ params, searchParams }: CatalogPageProps) {
   const [{ locale }, { category, brand }] = await Promise.all([params, searchParams]);
   const messages = getMessages(locale);
@@ -116,9 +176,17 @@ export default async function LocalizedCatalogPage({ params, searchParams }: Cat
     messages.common.allProducts;
   const filteringMessage = getFilteringMessage(locale, activeCategory?.name, brand);
   const emptyStateCopy = getEmptyStateCopy(locale);
+  const catalogJsonLd = buildBreadcrumbJsonLd([
+    { name: messages.header.nav.home, url: localizedAbsoluteUrl(locale) },
+    { name: messages.header.nav.shop, url: localizedAbsoluteUrl(locale, "/katalog") },
+  ]);
 
   return (
     <div className="bg-[var(--wft-body)] py-8 md:py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(catalogJsonLd) }}
+      />
       <div className="wft-container flex flex-col gap-8">
         <section className="grid gap-8 lg:grid-cols-[270px_1fr] xl:grid-cols-[290px_1fr]">
           <aside className="lg:sticky lg:top-6 lg:self-start">

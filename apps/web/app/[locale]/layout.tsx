@@ -3,6 +3,11 @@ import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { defaultLocale, getMessages, isLocale, locales, type Locale } from "@/lib/i18n";
+import {
+  buildLocaleAlternates,
+  getOpenGraphLocale,
+  localizedAbsoluteUrl,
+} from "@/lib/seo";
 
 type LocaleLayoutProps = {
   children: React.ReactNode;
@@ -23,18 +28,17 @@ export async function generateMetadata({
   const { locale } = await params;
   const activeLocale = isLocale(locale) ? locale : defaultLocale;
   const messages = getMessages(activeLocale);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wft-pneumatyka.pl";
 
   return {
-    metadataBase: new URL(siteUrl),
     title: messages.site.title,
     description: messages.site.description,
+    alternates: buildLocaleAlternates(activeLocale),
     openGraph: {
       title: messages.site.title,
       description: messages.site.description,
-      url: `/${activeLocale}`,
+      url: localizedAbsoluteUrl(activeLocale),
       siteName: messages.site.title,
-      locale: activeLocale,
+      locale: getOpenGraphLocale(activeLocale),
       type: "website",
       images: [
         {

@@ -1,13 +1,57 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Reveal } from "@/components/reveal";
-import { catalogPath, contactPath, getMessages, type Locale } from "@/lib/i18n";
+import {
+  catalogPath,
+  contactPath,
+  defaultLocale,
+  getMessages,
+  isLocale,
+  type Locale,
+} from "@/lib/i18n";
+import {
+  buildBreadcrumbJsonLd,
+  buildLocaleAlternates,
+  buildPageTitle,
+  getOpenGraphLocale,
+  localizedAbsoluteUrl,
+  trimDescription,
+} from "@/lib/seo";
 
 type AboutPageProps = {
   params: Promise<{
     locale: Locale;
   }>;
 };
+
+export async function generateMetadata({
+  params,
+}: AboutPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const activeLocale = isLocale(locale) ? locale : defaultLocale;
+  const content = aboutContent[activeLocale];
+  const title = buildPageTitle(content.title);
+  const description = trimDescription(content.lead);
+
+  return {
+    title,
+    description,
+    alternates: buildLocaleAlternates(activeLocale, "/o-nas"),
+    openGraph: {
+      title,
+      description,
+      url: localizedAbsoluteUrl(activeLocale, "/o-nas"),
+      locale: getOpenGraphLocale(activeLocale),
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
 
 type AboutContent = {
   eyebrow: string;
@@ -170,9 +214,17 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const { locale } = await params;
   const messages = getMessages(locale);
   const content = aboutContent[locale];
+  const aboutJsonLd = buildBreadcrumbJsonLd([
+    { name: messages.header.nav.home, url: localizedAbsoluteUrl(locale) },
+    { name: messages.header.nav.about, url: localizedAbsoluteUrl(locale, "/o-nas") },
+  ]);
 
   return (
     <div className="bg-[#f6f6f6] py-8 md:py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutJsonLd) }}
+      />
       <div className="wft-container space-y-8">
         <Reveal>
           <section className="overflow-hidden rounded-[24px] bg-white">

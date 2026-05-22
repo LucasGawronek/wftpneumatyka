@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { HeroStats } from "@/components/hero-stats";
 import { HomeContactForm } from "@/components/home-contact-form";
@@ -9,7 +10,9 @@ import { getProductImage } from "@/lib/catalog-media";
 import {
   catalogPath,
   categoryPath,
+  defaultLocale,
   getMessages,
+  isLocale,
   productPath,
   type Locale,
 } from "@/lib/i18n";
@@ -21,6 +24,15 @@ import {
   getProducts,
   getTopLevelCategories,
 } from "@/lib/catalog";
+import {
+  buildBreadcrumbJsonLd,
+  buildLocaleAlternates,
+  buildOrganizationJsonLd,
+  buildWebSiteJsonLd,
+  getOpenGraphLocale,
+  localizedAbsoluteUrl,
+  trimDescription,
+} from "@/lib/seo";
 import type { CatalogCategory, CatalogProduct } from "@/types/catalog";
 
 type HomePageProps = {
@@ -28,6 +40,44 @@ type HomePageProps = {
     locale: Locale;
   }>;
 };
+
+export async function generateMetadata({
+  params,
+}: HomePageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const activeLocale = isLocale(locale) ? locale : defaultLocale;
+  const messages = getMessages(activeLocale);
+  const description = trimDescription(
+    `${messages.site.description} ${messages.home.intro.description}`,
+  );
+
+  return {
+    title: messages.site.title,
+    description,
+    alternates: buildLocaleAlternates(activeLocale),
+    openGraph: {
+      title: messages.site.title,
+      description,
+      url: localizedAbsoluteUrl(activeLocale),
+      locale: getOpenGraphLocale(activeLocale),
+      type: "website",
+      images: [
+        {
+          url: "/wft/hero_new.png",
+          width: 1200,
+          height: 630,
+          alt: messages.site.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: messages.site.title,
+      description,
+      images: ["/wft/hero_new.png"],
+    },
+  };
+}
 
 function FeatureRow({ messages }: { messages: ReturnType<typeof getMessages> }) {
   return (
@@ -285,6 +335,16 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
     "WFT.Pneumatyka Waldemar Balak Regeneracja zacisków, zaworów, Długa 23, 64-000 Sierakowo",
   );
   const googleMapEmbedUrl = `https://www.google.com/maps?q=${googleMapBusinessQuery}&z=19&output=embed`;
+  const homeJsonLd = [
+    buildOrganizationJsonLd(),
+    buildWebSiteJsonLd(locale),
+    buildBreadcrumbJsonLd([
+      {
+        name: messages.header.nav.home,
+        url: localizedAbsoluteUrl(locale),
+      },
+    ]),
+  ];
   const repairSetsCategory = categories.find((category) => {
     const normalizedName = normalizeCategoryMatch(category.name);
     const normalizedSlug = normalizeCategoryMatch(category.slug);
@@ -303,6 +363,10 @@ export default async function LocalizedHomePage({ params }: HomePageProps) {
 
   return (
     <div className="pb-0">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }}
+      />
       <section className="relative min-h-[calc(100svh-var(--wft-header-height))] overflow-hidden bg-[#201d1d] text-white max-sm:min-h-0">
         <Image
           src="/wft/hero_new.png"

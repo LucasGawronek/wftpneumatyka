@@ -1,10 +1,28 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductImageGallery } from "@/components/product-image-gallery";
 import { getProductBySlug } from "@/lib/catalog";
 import { getProductImage } from "@/lib/catalog-media";
 import { specificationEntries } from "@/lib/format";
-import { catalogPath, categoryPath, getMessages, quotePath, type Locale } from "@/lib/i18n";
+import {
+  catalogPath,
+  categoryPath,
+  defaultLocale,
+  getMessages,
+  isLocale,
+  quotePath,
+  type Locale,
+} from "@/lib/i18n";
+import {
+  buildBreadcrumbJsonLd,
+  buildLocaleAlternates,
+  buildPageTitle,
+  buildProductJsonLd,
+  getOpenGraphLocale,
+  localizedAbsoluteUrl,
+  trimDescription,
+} from "@/lib/seo";
 
 type ProductPageProps = {
   params: Promise<{
@@ -12,6 +30,51 @@ type ProductPageProps = {
     slug: string;
   }>;
 };
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const activeLocale = isLocale(locale) ? locale : defaultLocale;
+  const product = await getProductBySlug(slug, activeLocale);
+
+  if (!product) {
+    return {};
+  }
+
+  const description = trimDescription(
+    product.shortDescription || product.description || product.name,
+  );
+  const title = buildPageTitle(product.name);
+  const path = `/produkt/${product.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: buildLocaleAlternates(activeLocale, path),
+    openGraph: {
+      title,
+      description,
+      url: localizedAbsoluteUrl(activeLocale, path),
+      locale: getOpenGraphLocale(activeLocale),
+      type: "article",
+      images: product.imageUrl
+        ? [
+            {
+              url: product.imageUrl,
+              alt: product.name,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: product.imageUrl ? [product.imageUrl] : undefined,
+    },
+  };
+}
 
 export default async function LocalizedProductPage({ params }: ProductPageProps) {
   const { locale, slug } = await params;
@@ -26,9 +89,29 @@ export default async function LocalizedProductPage({ params }: ProductPageProps)
   const productImages = Array.from(
     new Set([getProductImage(product), ...(product.galleryImages ?? []).filter(Boolean)]),
   );
+  const productJsonLd = [
+    buildBreadcrumbJsonLd([
+      { name: messages.header.nav.home, url: localizedAbsoluteUrl(locale) },
+      { name: messages.header.nav.shop, url: localizedAbsoluteUrl(locale, "/katalog") },
+      ...(product.category
+        ? [
+            {
+              name: product.category.name,
+              url: localizedAbsoluteUrl(locale, `/katalog?category=${product.category.slug}`),
+            },
+          ]
+        : []),
+      { name: product.name, url: localizedAbsoluteUrl(locale, `/produkt/${product.slug}`) },
+    ]),
+    buildProductJsonLd(product, locale),
+  ];
 
   return (
     <div className="bg-[#f4f4f4] py-8 md:py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <div className="wft-container flex flex-col gap-8">
         <nav className="flex flex-wrap items-center gap-2 text-xs text-[#7a7a7a]">
           <Link href={`/${locale}`} className="transition hover:text-[var(--wft-orange)]">
