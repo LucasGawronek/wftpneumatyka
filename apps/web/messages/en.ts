@@ -176,7 +176,7 @@ const enMessages = {
       `Please prepare a quote for product ${name} (${partNumber}).`,
     submitIdle: "Send inquiry",
     submitPending: "Sending...",
-    success: "The inquiry has been saved and can be handled in Strapi.",
+    success: "Your inquiry has been sent successfully.",
     error: "An error occurred while sending the form.",
   },
   homeContactForm: {

@@ -177,7 +177,7 @@ const plMessages = {
       `Proszę o przygotowanie wyceny dla produktu ${name} (${partNumber}).`,
     submitIdle: "Wyślij zapytanie",
     submitPending: "Wysyłanie...",
-    success: "Zapytanie zostało zapisane i można je obsłużyć w Strapi.",
+    success: "Zapytanie zostało wysłane pomyślnie.",
     error: "Wystąpił błąd podczas wysyłania formularza.",
   },
   homeContactForm: {

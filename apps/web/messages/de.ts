@@ -178,7 +178,7 @@ const deMessages = {
       `Bitte erstellen Sie ein Angebot für das Produkt ${name} (${partNumber}).`,
     submitIdle: "Anfrage senden",
     submitPending: "Wird gesendet...",
-    success: "Die Anfrage wurde gespeichert und kann in Strapi bearbeitet werden.",
+    success: "Ihre Anfrage wurde erfolgreich gesendet.",
     error: "Beim Senden des Formulars ist ein Fehler aufgetreten.",
   },
   homeContactForm: {
