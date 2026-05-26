@@ -151,7 +151,7 @@ export function HeroStats({ stats }: HeroStatsProps) {
     >
       {parsedStats.map((stat) => (
         <div key={stat.label} className="px-4 py-4 text-white sm:px-8 sm:py-6">
-          <div className="text-[24px] font-extrabold leading-none sm:text-[42px]">
+          <div className="pb-1 text-[24px] font-extrabold leading-[0.92] sm:pb-1.5 sm:text-[42px]">
             {formatAnimatedValue(stat, progress)}
           </div>
           <div className="mt-2 text-[11px] font-semibold leading-4 sm:mt-3 sm:text-[14px] sm:leading-5">

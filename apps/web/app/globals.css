@@ -94,11 +94,13 @@ textarea {
   min-height: calc(100svh - var(--wft-header-height));
   display: flex;
   align-items: center;
+  padding-block: 2rem 4.5rem;
 }
 
 .hero-content {
   max-width: 780px;
-  transform: translateY(36px);
+  width: 100%;
+  transform: none;
 }
 
 .reveal {
@@ -154,8 +156,8 @@ textarea {
     line-height: 50px;
   }
 
-  .hero-content {
-    transform: translateY(24px);
+  .hero-shell {
+    padding-block: 1.75rem 4rem;
   }
 }
 
@@ -165,8 +167,8 @@ textarea {
     padding-inline: 0;
   }
 
-  .hero-content {
-    transform: translateY(64px);
+  .hero-shell {
+    padding-block: 2.5rem 5.5rem;
   }
 }
 
@@ -189,7 +191,10 @@ textarea {
 
   .hero-content {
     max-width: 100%;
-    transform: translateY(0);
+  }
+
+  .hero-shell {
+    padding-block: 1.25rem 2rem;
   }
 }
 
