@@ -84,7 +84,7 @@ const enMessages = {
       ["120+", "Repaired systems"],
     ],
     hero: {
-      accent: "Regeneration",
+      accent: "Remanufacturing",
       lines: ["and parts", "for pneumatic systems", "in heavy transport"],
       copy: "Precise regeneration, proven parts\nand reliability in all conditions.",
       catalogCta: "Product catalog",

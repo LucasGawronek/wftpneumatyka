@@ -10,6 +10,74 @@
   "options": {
     "draftAndPublish": true
   },
+  "config": {
+    "metadatas": {
+      "name": {
+        "edit": {
+          "label": "Nazwa"
+        },
+        "list": {
+          "label": "Nazwa"
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "Slug"
+        },
+        "list": {
+          "label": "Slug"
+        }
+      },
+      "description": {
+        "edit": {
+          "label": "Opis"
+        },
+        "list": {
+          "label": "Opis"
+        }
+      },
+      "sortOrder": {
+        "edit": {
+          "label": "Kolejnosc sortowania"
+        },
+        "list": {
+          "label": "Kolejnosc sortowania"
+        }
+      },
+      "coverImage": {
+        "edit": {
+          "label": "Zdjecie glowne"
+        },
+        "list": {
+          "label": "Zdjecie glowne"
+        }
+      },
+      "parentCategory": {
+        "edit": {
+          "label": "Kategoria nadrzedna"
+        },
+        "list": {
+          "label": "Kategoria nadrzedna"
+        }
+      },
+      "children": {
+        "edit": {
+          "label": "Podkategorie"
+        },
+        "list": {
+          "label": "Podkategorie"
+        }
+      },
+      "products": {
+        "edit": {
+          "label": "Produkty"
+        },
+        "list": {
+          "label": "Produkty"
+        }
+      }
+    }
+  },
   "pluginOptions": {
     "i18n": {
       "localized": true

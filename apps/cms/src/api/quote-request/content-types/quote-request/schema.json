@@ -10,6 +10,106 @@
   "options": {
     "draftAndPublish": false
   },
+  "config": {
+    "metadatas": {
+      "customerName": {
+        "edit": {
+          "label": "Imie i nazwisko"
+        },
+        "list": {
+          "label": "Imie i nazwisko"
+        }
+      },
+      "email": {
+        "edit": {
+          "label": "E-mail"
+        },
+        "list": {
+          "label": "E-mail"
+        }
+      },
+      "phone": {
+        "edit": {
+          "label": "Telefon"
+        },
+        "list": {
+          "label": "Telefon"
+        }
+      },
+      "company": {
+        "edit": {
+          "label": "Firma"
+        },
+        "list": {
+          "label": "Firma"
+        }
+      },
+      "message": {
+        "edit": {
+          "label": "Wiadomosc"
+        },
+        "list": {
+          "label": "Wiadomosc"
+        }
+      },
+      "consent": {
+        "edit": {
+          "label": "Zgoda"
+        },
+        "list": {
+          "label": "Zgoda"
+        }
+      },
+      "status": {
+        "edit": {
+          "label": "Status"
+        },
+        "list": {
+          "label": "Status"
+        }
+      },
+      "productName": {
+        "edit": {
+          "label": "Nazwa produktu"
+        },
+        "list": {
+          "label": "Nazwa produktu"
+        }
+      },
+      "productSlug": {
+        "edit": {
+          "label": "Slug produktu"
+        },
+        "list": {
+          "label": "Slug produktu"
+        }
+      },
+      "productPartNumber": {
+        "edit": {
+          "label": "Numer czesci produktu"
+        },
+        "list": {
+          "label": "Numer czesci produktu"
+        }
+      },
+      "requestLocale": {
+        "edit": {
+          "label": "Jezyk zapytania"
+        },
+        "list": {
+          "label": "Jezyk zapytania"
+        }
+      },
+      "product": {
+        "edit": {
+          "label": "Produkt"
+        },
+        "list": {
+          "label": "Produkt"
+        }
+      }
+    }
+  },
   "pluginOptions": {},
   "attributes": {
     "customerName": {

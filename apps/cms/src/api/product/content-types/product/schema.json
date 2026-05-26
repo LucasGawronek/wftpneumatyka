@@ -10,6 +10,114 @@
   "options": {
     "draftAndPublish": true
   },
+  "config": {
+    "metadatas": {
+      "name": {
+        "edit": {
+          "label": "Nazwa"
+        },
+        "list": {
+          "label": "Nazwa"
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "Slug"
+        },
+        "list": {
+          "label": "Slug"
+        }
+      },
+      "partNumber": {
+        "edit": {
+          "label": "Numer czesci"
+        },
+        "list": {
+          "label": "Numer czesci"
+        }
+      },
+      "brand": {
+        "edit": {
+          "label": "Marka"
+        },
+        "list": {
+          "label": "Marka"
+        }
+      },
+      "shortDescription": {
+        "edit": {
+          "label": "Krotki opis"
+        },
+        "list": {
+          "label": "Krotki opis"
+        }
+      },
+      "description": {
+        "edit": {
+          "label": "Opis"
+        },
+        "list": {
+          "label": "Opis"
+        }
+      },
+      "specifications": {
+        "edit": {
+          "label": "Specyfikacja"
+        },
+        "list": {
+          "label": "Specyfikacja"
+        }
+      },
+      "featured": {
+        "edit": {
+          "label": "Polecany"
+        },
+        "list": {
+          "label": "Polecany"
+        }
+      },
+      "sortOrder": {
+        "edit": {
+          "label": "Kolejnosc sortowania"
+        },
+        "list": {
+          "label": "Kolejnosc sortowania"
+        }
+      },
+      "mainImage": {
+        "edit": {
+          "label": "Zdjecie glowne"
+        },
+        "list": {
+          "label": "Zdjecie glowne"
+        }
+      },
+      "gallery": {
+        "edit": {
+          "label": "Galeria"
+        },
+        "list": {
+          "label": "Galeria"
+        }
+      },
+      "category": {
+        "edit": {
+          "label": "Kategoria"
+        },
+        "list": {
+          "label": "Kategoria"
+        }
+      },
+      "quoteRequests": {
+        "edit": {
+          "label": "Zapytania ofertowe"
+        },
+        "list": {
+          "label": "Zapytania ofertowe"
+        }
+      }
+    }
+  },
   "pluginOptions": {
     "i18n": {
       "localized": true
