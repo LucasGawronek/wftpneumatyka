@@ -4,7 +4,7 @@
   "info": {
     "singularName": "quote-request",
     "pluralName": "quote-requests",
-    "displayName": "Quote Request",
+    "displayName": "Zapytanie ofertowe",
     "description": "Zapytania przesylane z formularza wyceny"
   },
   "options": {
@@ -13,29 +13,36 @@
   "pluginOptions": {},
   "attributes": {
     "customerName": {
+      "displayName": "Imie i nazwisko",
       "type": "string",
       "required": true
     },
     "email": {
+      "displayName": "E-mail",
       "type": "email",
       "required": true
     },
     "phone": {
+      "displayName": "Telefon",
       "type": "string"
     },
     "company": {
+      "displayName": "Firma",
       "type": "string"
     },
     "message": {
+      "displayName": "Wiadomosc",
       "type": "text",
       "required": true
     },
     "consent": {
+      "displayName": "Zgoda",
       "type": "boolean",
       "required": true,
       "default": false
     },
     "status": {
+      "displayName": "Status",
       "type": "enumeration",
       "enum": [
         "new",
@@ -46,18 +53,23 @@
       "default": "new"
     },
     "productName": {
+      "displayName": "Nazwa produktu",
       "type": "string"
     },
     "productSlug": {
+      "displayName": "Slug produktu",
       "type": "string"
     },
     "productPartNumber": {
+      "displayName": "Numer czesci produktu",
       "type": "string"
     },
     "requestLocale": {
+      "displayName": "Jezyk zapytania",
       "type": "string"
     },
     "product": {
+      "displayName": "Produkt",
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::product.product",

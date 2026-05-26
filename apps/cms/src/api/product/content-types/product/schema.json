@@ -17,6 +17,7 @@
   },
   "attributes": {
     "name": {
+      "displayName": "Nazwa",
       "type": "string",
       "required": true,
       "pluginOptions": {
@@ -26,6 +27,7 @@
       }
     },
     "slug": {
+      "displayName": "Slug",
       "type": "uid",
       "targetField": "name",
       "required": true,
@@ -36,6 +38,7 @@
       }
     },
     "partNumber": {
+      "displayName": "Numer czesci",
       "type": "string",
       "required": true,
       "pluginOptions": {
@@ -45,6 +48,7 @@
       }
     },
     "brand": {
+      "displayName": "Marka",
       "type": "string",
       "pluginOptions": {
         "i18n": {
@@ -53,6 +57,7 @@
       }
     },
     "shortDescription": {
+      "displayName": "Krotki opis",
       "type": "text",
       "pluginOptions": {
         "i18n": {
@@ -61,6 +66,7 @@
       }
     },
     "description": {
+      "displayName": "Opis",
       "type": "text",
       "pluginOptions": {
         "i18n": {
@@ -69,6 +75,7 @@
       }
     },
     "specifications": {
+      "displayName": "Specyfikacja",
       "type": "text",
       "pluginOptions": {
         "i18n": {
@@ -77,6 +84,7 @@
       }
     },
     "featured": {
+      "displayName": "Polecany",
       "type": "boolean",
       "default": false,
       "pluginOptions": {
@@ -86,6 +94,7 @@
       }
     },
     "sortOrder": {
+      "displayName": "Kolejnosc sortowania",
       "type": "integer",
       "default": 0,
       "pluginOptions": {
@@ -95,6 +104,7 @@
       }
     },
     "mainImage": {
+      "displayName": "Zdjecie glowne",
       "type": "media",
       "multiple": false,
       "allowedTypes": [
@@ -107,6 +117,7 @@
       }
     },
     "gallery": {
+      "displayName": "Galeria",
       "type": "media",
       "multiple": true,
       "allowedTypes": [
@@ -119,6 +130,7 @@
       }
     },
     "category": {
+      "displayName": "Kategoria",
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::category.category",
@@ -130,6 +142,7 @@
       }
     },
     "quoteRequests": {
+      "displayName": "Zapytania ofertowe",
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::quote-request.quote-request",

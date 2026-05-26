@@ -17,6 +17,7 @@
   },
   "attributes": {
     "name": {
+      "displayName": "Nazwa",
       "type": "string",
       "required": true,
       "pluginOptions": {
@@ -26,6 +27,7 @@
       }
     },
     "slug": {
+      "displayName": "Slug",
       "type": "uid",
       "targetField": "name",
       "required": true,
@@ -36,6 +38,7 @@
       }
     },
     "description": {
+      "displayName": "Opis",
       "type": "text",
       "pluginOptions": {
         "i18n": {
@@ -44,6 +47,7 @@
       }
     },
     "sortOrder": {
+      "displayName": "Kolejnosc sortowania",
       "type": "integer",
       "default": 0,
       "pluginOptions": {
@@ -53,6 +57,7 @@
       }
     },
     "coverImage": {
+      "displayName": "Zdjecie glowne",
       "type": "media",
       "multiple": false,
       "allowedTypes": [
@@ -65,6 +70,7 @@
       }
     },
     "parentCategory": {
+      "displayName": "Kategoria nadrzedna",
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::category.category",
@@ -76,6 +82,7 @@
       }
     },
     "children": {
+      "displayName": "Podkategorie",
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::category.category",
@@ -87,6 +94,7 @@
       }
     },
     "products": {
+      "displayName": "Produkty",
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::product.product",
