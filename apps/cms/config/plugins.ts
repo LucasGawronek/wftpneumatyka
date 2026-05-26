@@ -9,6 +9,7 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
     },
   },
   email: {
+    enabled: true,
     config: {
       provider: 'nodemailer',
       providerOptions: {
