@@ -104,6 +104,15 @@ npm run build:cms
 npm run build:web
 ```
 
+Lub jednym skryptem:
+
+```bash
+cd /var/www/wftwebsite
+npm run deploy:vps
+```
+
+Skrypt zrobi `npm install`, oba buildy, restart procesow `PM2` i na koncu pokaże status oraz porty `3000` i `1337`.
+
 ## 6. Start przez PM2
 
 W repo jest gotowy plik:

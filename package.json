@@ -12,6 +12,7 @@
     "dev:cms": "npm --prefix apps/cms run develop",
     "build:web": "npm --prefix apps/web run build",
     "build:cms": "npm --prefix apps/cms run build",
-    "lint:web": "npm --prefix apps/web run lint"
+    "lint:web": "npm --prefix apps/web run lint",
+    "deploy:vps": "bash ./scripts/deploy-vps.sh"
   }
 }

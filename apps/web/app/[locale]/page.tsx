@@ -20,7 +20,6 @@ import {
   countProductsForCategoryBranch,
   getCategories,
   getChildCategories,
-  getFeaturedProducts,
   getProducts,
   getTopLevelCategories,
 } from "@/lib/catalog";
@@ -318,18 +317,33 @@ function normalizeCategoryMatch(value?: string | null) {
     .trim();
 }
 
+function pickRandomProducts(
+  products: CatalogProduct[],
+  count: number,
+  excludedIds: Set<string> = new Set(),
+) {
+  const pool = products.filter((product) => !excludedIds.has(product.documentId));
+  const shuffled = [...pool];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+  }
+
+  return shuffled.slice(0, count);
+}
+
 export default async function LocalizedHomePage({ params }: HomePageProps) {
   const { locale } = await params;
   const messages = getMessages(locale);
 
-  const [categories, products, featuredProducts] = await Promise.all([
-    getCategories(locale),
-    getProducts({ locale }),
-    getFeaturedProducts(locale),
-  ]);
+  const [categories, products] = await Promise.all([getCategories(locale), getProducts({ locale })]);
 
   const newestProducts = products.slice(0, 3);
-  const popularProducts = (featuredProducts.length > 0 ? featuredProducts : products).slice(0, 3);
+  const newestProductIds = new Set(newestProducts.map((product) => product.documentId));
+  const randomPopularProducts = pickRandomProducts(products, 3, newestProductIds);
+  const popularProducts =
+    randomPopularProducts.length > 0 ? randomPopularProducts : pickRandomProducts(products, 3);
   const sidebarCategories = getTopLevelCategories(categories).slice(0, 6);
   const googleMapBusinessQuery = encodeURIComponent(
     "WFT.Pneumatyka Waldemar Balak Regeneracja zacisków, zaworów, Długa 23, 64-000 Sierakowo",
