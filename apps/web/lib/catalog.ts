@@ -8,6 +8,7 @@ import { defaultLocale, type Locale } from "@/lib/i18n";
 import type { CatalogCategory, CatalogProduct, QuoteRequestInput } from "@/types/catalog";
 
 type StrapiEntity = Record<string, unknown>;
+const STRAPI_PAGE_SIZE = 100;
 
 function normalizeSingleRelation<T>(value: unknown): T | null {
   if (!value) {
@@ -118,6 +119,11 @@ function applyLocale(params: URLSearchParams, locale?: Locale) {
   }
 }
 
+function applyPagination(params: URLSearchParams, page: number, pageSize = STRAPI_PAGE_SIZE) {
+  params.set("pagination[page]", String(page));
+  params.set("pagination[pageSize]", String(pageSize));
+}
+
 function getLocaleFallbackChain(locale?: Locale): Array<Locale | undefined> {
   if (!locale) {
     return [undefined];
@@ -130,7 +136,7 @@ function getLocaleFallbackChain(locale?: Locale): Array<Locale | undefined> {
   return [locale, defaultLocale, undefined];
 }
 
-function categoryQuery(locale?: Locale) {
+function categoryQuery(locale?: Locale, page = 1) {
   const params = new URLSearchParams();
   params.set("sort[0]", "sortOrder:asc");
   params.set("sort[1]", "name:asc");
@@ -140,6 +146,7 @@ function categoryQuery(locale?: Locale) {
   params.set("populate[coverImage][fields][0]", "url");
   params.set("populate[parentCategory][fields][0]", "name");
   params.set("populate[parentCategory][fields][1]", "slug");
+  applyPagination(params, page);
   applyLocale(params, locale);
   return params.toString();
 }
@@ -149,6 +156,7 @@ function productsQuery(options?: {
   brand?: string;
   featured?: boolean;
   locale?: Locale;
+  page?: number;
 }) {
   const params = new URLSearchParams();
   params.set("sort[0]", "sortOrder:asc");
@@ -167,6 +175,7 @@ function productsQuery(options?: {
   params.set("populate[category][fields][1]", "slug");
   params.set("populate[category][populate][parentCategory][fields][0]", "name");
   params.set("populate[category][populate][parentCategory][fields][1]", "slug");
+  applyPagination(params, options?.page ?? 1);
 
   if (options?.categorySlug) {
     params.set("filters[$or][0][category][slug][$eq]", options.categorySlug);
@@ -183,6 +192,26 @@ function productsQuery(options?: {
 
   applyLocale(params, options?.locale);
   return params.toString();
+}
+
+async function fetchAllCollectionPages<T>(
+  buildPath: (page: number) => string,
+) {
+  const records: T[] = [];
+  let page = 1;
+  let pageCount = 1;
+
+  do {
+    const response = await strapiFetch<StrapiCollectionResponse<T>>(buildPath(page), {
+      method: "GET",
+    });
+
+    records.push(...response.data);
+    pageCount = response.meta.pagination?.pageCount ?? 1;
+    page += 1;
+  } while (page <= pageCount);
+
+  return records;
 }
 
 function productBySlugQuery(slug: string, locale?: Locale) {
@@ -204,12 +233,11 @@ function normalizeSearchValue(value: string) {
 }
 
 async function fetchCategories(locale?: Locale) {
-  const response = await strapiFetch<StrapiCollectionResponse<StrapiEntity>>(
-    `/api/categories?${categoryQuery(locale)}`,
-    { method: "GET" },
+  const records = await fetchAllCollectionPages<StrapiEntity>(
+    (page) => `/api/categories?${categoryQuery(locale, page)}`,
   );
 
-  return response.data.map(normalizeCategory);
+  return records.map(normalizeCategory);
 }
 
 async function fetchProducts(options?: {
@@ -218,12 +246,11 @@ async function fetchProducts(options?: {
   featured?: boolean;
   locale?: Locale;
 }) {
-  const response = await strapiFetch<StrapiCollectionResponse<StrapiEntity>>(
-    `/api/products?${productsQuery(options)}`,
-    { method: "GET" },
+  const records = await fetchAllCollectionPages<StrapiEntity>(
+    (page) => `/api/products?${productsQuery({ ...options, page })}`,
   );
 
-  return response.data.map(normalizeProduct);
+  return records.map(normalizeProduct);
 }
 
 export async function getCategories(locale?: Locale) {

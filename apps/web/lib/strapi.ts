@@ -4,7 +4,14 @@ const STRAPI_FETCH_RETRY_DELAYS_MS = [250, 750];
 
 export type StrapiCollectionResponse<T> = {
   data: T[];
-  meta: Record<string, unknown>;
+  meta: {
+    pagination?: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  } & Record<string, unknown>;
 };
 
 export type StrapiSingleResponse<T> = {
